@@ -1,30 +1,35 @@
 import pandas as pd
 import matplotlib.pyplot as plt
-from mpl_toolkits.mplot3d import Axes3D
-import numpy as np
 
 # データフレームを読み込む
-df = pd.read_csv('./csv/RGBCMYK.csv')
+df = pd.read_csv('./csv/CMYK.csv')
 
 # RGB値を0-1の範囲に正規化（色として使用）
 colors = df[['R', 'G', 'B']].values / 255.0
 
-# 3Dグラフを作成
-fig = plt.figure(figsize=(10, 8))
-ax = fig.add_subplot(111, projection='3d')
+# 3つのサブプロットを作成
+fig, axes = plt.subplots(1, 3, figsize=(15, 5))
 
-# CMYの3次元散布図（RGB値で色付け）
-ax.scatter(df['C'], df['M'], df['Y'], c=colors, marker='o', s=100, edgecolors='black')
+# YM グラフ
+axes[0].scatter(df['Y'], df['M'], c=colors, s=100, edgecolors='black')
+axes[0].set_xlabel('Y (Yellow)', fontsize=12)
+axes[0].set_ylabel('M (Magenta)', fontsize=12)
+axes[0].set_title('Y-M Plane', fontsize=14)
+axes[0].grid(True, alpha=0.3)
 
-# 軸ラベル
-ax.set_xlabel('C (Cyan)', fontsize=12)
-ax.set_ylabel('M (Magenta)', fontsize=12)
-ax.set_zlabel('Y (Yellow)', fontsize=12)
-ax.set_title('CMY Color Space', fontsize=14)
+# MC グラフ
+axes[1].scatter(df['M'], df['C'], c=colors, s=100, edgecolors='black')
+axes[1].set_xlabel('M (Magenta)', fontsize=12)
+axes[1].set_ylabel('C (Cyan)', fontsize=12)
+axes[1].set_title('M-C Plane', fontsize=14)
+axes[1].grid(True, alpha=0.3)
 
-# 軸の範囲を設定
-ax.set_xlim(0, 255)
-ax.set_ylim(0, 255)
-ax.set_zlim(0, 255)
+# YC グラフ
+axes[2].scatter(df['Y'], df['C'], c=colors, s=100, edgecolors='black')
+axes[2].set_xlabel('Y (Yellow)', fontsize=12)
+axes[2].set_ylabel('C (Cyan)', fontsize=12)
+axes[2].set_title('Y-C Plane', fontsize=14)
+axes[2].grid(True, alpha=0.3)
 
+plt.tight_layout()
 plt.show()
