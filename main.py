@@ -15,9 +15,10 @@ K_percent = (df['K'] / 255.0) * 100
 MC_percent = M_percent + C_percent
 MK_percent = M_percent + K_percent
 YMC_percent = Y_percent + M_percent + C_percent
+YMCK_percent = Y_percent + M_percent + C_percent + K_percent
 
-# 3行3列のサブプロット（サイズを半分に）
-fig, axes = plt.subplots(3, 3, figsize=(9, 6))
+# 4行3列のサブプロット（サイズを半分に）
+fig, axes = plt.subplots(4, 3, figsize=(9, 8))
 
 # 1行目: Y vs M, Y vs C, Y vs K
 axes[0, 0].scatter(Y_percent, M_percent, c=colors, s=50, edgecolors='black')
@@ -76,6 +77,17 @@ axes[2, 0].grid(True, alpha=0.3)
 # 3行目の残りを非表示
 axes[2, 1].axis('off')
 axes[2, 2].axis('off')
+
+# 4行目: Y+M+C+Kのヒストグラム
+axes[3, 0].hist(YMCK_percent, bins=30, color='gray', edgecolor='black', alpha=0.7)
+axes[3, 0].set_xlabel('Y+M+C+K [%]', fontsize=10)
+axes[3, 0].set_ylabel('Frequency', fontsize=10)
+axes[3, 0].set_title('Histogram of Y+M+C+K', fontsize=11)
+axes[3, 0].grid(True, alpha=0.3)
+
+# 4行目の残りを非表示
+axes[3, 1].axis('off')
+axes[3, 2].axis('off')
 
 plt.tight_layout()
 plt.show()
