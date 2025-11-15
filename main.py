@@ -1,5 +1,6 @@
 import pandas as pd
 import matplotlib.pyplot as plt
+import numpy as np
 
 # データフレームを読み込む
 df = pd.read_csv('./csv/RGBCMYK.csv')
@@ -17,8 +18,8 @@ MK_percent = M_percent + K_percent
 YMC_percent = Y_percent + M_percent + C_percent
 YMCK_percent = Y_percent + M_percent + C_percent + K_percent
 
-# 4行3列のサブプロット（サイズを半分に）
-fig, axes = plt.subplots(4, 3, figsize=(9, 8))
+# 4行3列のサブプロット
+fig, axes = plt.subplots(4, 3, figsize=(15, 13))
 
 # 1行目: Y vs M, Y vs C, Y vs K
 axes[0, 0].scatter(Y_percent, M_percent, c=colors, s=50, edgecolors='black')
@@ -62,7 +63,6 @@ axes[1, 1].set_xlim(0, 100)
 axes[1, 1].set_ylim(0, 200)
 axes[1, 1].grid(True, alpha=0.3)
 
-# 2行目右を非表示
 axes[1, 2].axis('off')
 
 # 3行目: Y vs Y+M+C
@@ -74,18 +74,19 @@ axes[2, 0].set_xlim(0, 100)
 axes[2, 0].set_ylim(0, 300)
 axes[2, 0].grid(True, alpha=0.3)
 
-# 3行目の残りを非表示
 axes[2, 1].axis('off')
 axes[2, 2].axis('off')
 
-# 4行目: Y+M+C+Kのヒストグラム
-axes[3, 0].hist(YMCK_percent, bins=30, color='gray', edgecolor='black', alpha=0.7)
+# 4行目: Y+M+C+Kのヒストグラム（統計情報付き）
+n, bins, patches = axes[3, 0].hist(YMCK_percent, bins=30, color='gray', edgecolor='black', alpha=0.7)
+axes[3, 0].axvline(YMCK_percent.mean(), color='red', linestyle='--', linewidth=2, label=f'Mean: {YMCK_percent.mean():.1f}%')
+axes[3, 0].axvline(YMCK_percent.median(), color='blue', linestyle='--', linewidth=2, label=f'Median: {YMCK_percent.median():.1f}%')
 axes[3, 0].set_xlabel('Y+M+C+K [%]', fontsize=10)
 axes[3, 0].set_ylabel('Frequency', fontsize=10)
 axes[3, 0].set_title('Histogram of Y+M+C+K', fontsize=11)
+axes[3, 0].legend(fontsize=8)
 axes[3, 0].grid(True, alpha=0.3)
 
-# 4行目の残りを非表示
 axes[3, 1].axis('off')
 axes[3, 2].axis('off')
 
